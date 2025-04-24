@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins-test-deployment
+  labels:
+    app: jenkins-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins-test
+  template:
+    metadata:
+      labels:
+        app: jenkins-test
+    spec:
+      containers:
+        - name: jenkins-test-container
+          image: openjdk:11-jdk
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: jenkins-test-volume
+              mountPath: /app
+      volumes:
+        - name: jenkins-test-volume
+          emptyDir: {}
