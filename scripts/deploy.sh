@@ -1,14 +1,20 @@
 #!/bin/bash
 
-# Variables que pueden venir del Jenkinsfile
-REMOTE_HOST=51.8.47.159   # por ejemplo, IP pública de tu servidor
-REMOTE_USER=ubuntu        # usuario del servidor
-REMOTE_PATH=/home/ubuntu/app
+# Ruta del .jar (asegurate de que exista)
+JAR_PATH="target/mi-app.jar"
 
-# Copiar el .jar
-echo ">>> Copiando JAR..."
-scp -o StrictHostKeyChecking=no target/*.jar ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_PATH}/app.jar
+# Verificar que existe
+if [ ! -f "$JAR_PATH" ]; then
+  echo ">>> ERROR: No se encontró el archivo $JAR_PATH"
+  exit 1
+fi
 
-# Ejecutar remotamente
-echo ">>> Ejecutando remotamente..."
-ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} "cd ${REMOTE_PATH} && nohup java -jar app.jar > output.log 2>&1 &"
+echo ">>> Ejecutando la app dentro del mismo Jenkins..."
+
+# Detener proceso anterior si existe (opcional)
+pkill -f "java -jar" || true
+
+# Correr en segundo plano
+nohup java -jar "$JAR_PATH" > output.log 2>&1 &
+
+echo ">>> La app está corriendo (background). Logs en output.log"
