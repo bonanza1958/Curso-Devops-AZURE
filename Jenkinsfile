@@ -8,7 +8,7 @@ pipeline {
           branches: [[name: '*/main']],
           userRemoteConfigs: [[
             url: 'git@github.com:bonanza1958/Curso-Devops-AZURE.git',
-            credentialsId: 'github-ssh-key'
+            credentialsId: 'ssh-github-key'
           ]]
         ])
       }
