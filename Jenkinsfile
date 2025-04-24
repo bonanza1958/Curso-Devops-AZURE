@@ -4,15 +4,22 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git url: 'git@github.com:bonanza1958/Curso-Devops-AZURE.git',
-            credentialsId: 'ssh-git-credentials'
+        checkout([$class: 'GitSCM',
+          branches: [[name: '*/main']],
+          userRemoteConfigs: [[
+            url: 'git@github.com:bonanza1958/Curso-Devops-AZURE.git',
+            credentialsId: 'github-ssh-key'
+          ]]
+        ])
       }
     }
+
     stage('Build') {
       steps {
         sh 'mvn clean package'
       }
     }
+
     stage('Unit Tests') {
       steps {
         sh 'mvn test'
@@ -23,6 +30,7 @@ pipeline {
         }
       }
     }
+
     stage('Deploy') {
       steps {
         sh './scripts/deploy.sh'
