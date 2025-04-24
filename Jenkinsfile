@@ -1,7 +1,20 @@
 pipeline {
   agent any
 
+  tools {
+    // Asegúrate de que este nombre coincida con el que configuraste en Jenkins > Global Tool Configuration
+    maven 'Maven1'
+  }
+
   stages {
+    stage('Check Maven') {
+      steps {
+        echo 'Verificando instalación de Maven...'
+        sh 'which mvn'
+        sh 'mvn -v'
+      }
+    }
+
     stage('Checkout') {
       steps {
         checkout([$class: 'GitSCM',
