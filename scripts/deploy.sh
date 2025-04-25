@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Ruta del .jar (asegurate de que exista)
-JAR_PATH="target/mi-app.jar"
+JAR_PATH="target/jenkins-test-app-1.0-SNAPSHOT.jar.jar"
 
 # Verificar que existe
 if [ ! -f "$JAR_PATH" ]; then
